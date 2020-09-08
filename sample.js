@@ -209,6 +209,20 @@
         var m_latlng = [];
 
         // 緯度・経度をもとに、地図にポインタを打ち込みます
+        // for (i = 0; i < lat.length; i += 1) {
+        //     if (isNaN(lat[i]) === false && isNaN(lng[i]) === false) {
+        //         m_latlng[i] = new google.maps.LatLng(lat[i], lng[i]);
+        //         marker[i] = new google.maps.Marker({
+        //             position: m_latlng[i],
+        //             map: map,
+        //             // ポインタのアイコンは Google Charts を使用します
+        //             icon: 'https://chart.googleapis.com/chart?chst=d_bubble_text_small&chld=edge_bc|'
+        //             + recno[i] + '|FF8060|000000'
+        //         });
+        //     }
+        // }
+
+
         for (i = 0; i < lat.length; i += 1) {
             if (isNaN(lat[i]) === false && isNaN(lng[i]) === false) {
                 m_latlng[i] = new google.maps.LatLng(lat[i], lng[i]);
@@ -221,6 +235,72 @@
                 });
             }
         }
+
+        marker.addListener("click", () => {
+            alert('aaaaaaaaaaaaaaa');
+        });
+
+        //クリックしたら指定したurlに遷移するイベント
+        // google.maps.event.addListener(marker, 'click', (function(url){
+        //     return function(){ alert('aaaaaaaaaaaaaaaaa') };
+        // }));
+
+
+
+
+        // google.maps.event.addListener(map, 'click', function() {
+        //     alert('aaaaaaaaaaa');
+        // });
+
+
+
+        // google.maps.event.addListener(
+        //     m_latlng, 
+        //     "click", 
+        //     function (e) {
+        //         alert('click');
+        //     }
+        // );
+        // google.maps.event.addListener(
+        //     marker, 
+        //     "click", 
+        //     function (e) {
+        //         alert('click');
+        //     }
+        // );
+
+
+        // function displayName() { // displayName() は内部に閉じた関数
+        //     alert(name); // 親関数で宣言された変数を使用
+        // }
+        // displayName();
+        // 。。。。。。。。。。。。。。。。
+        // Event
+        // marker.addListener( "click", function ( argument ) {
+        //     console.log( argument ) ;
+        // } ) ;
+        // google.maps.event.addListener(marker, 'click', clickEventFunc);
+        
+        // clickEventFunc.onclick = function() {
+        //     window.confirm('あいうえお');
+        // };
+        // function clickEventFunc(event) {
+        //     window.confirm('aaaaaaaaaaaaaaaaaaaaaaaaa');
+        // }
+
+        // ボタン
+        var myIndexButton = document.createElement('button');
+        myIndexButton.id = 'my_index_button';
+        myIndexButton.innerText = '現在地';
+
+        // ボタンクリック時の処理
+        myIndexButton.onclick = function() {
+            window.prompt('いま押しましたね？');
+        };
+
+        // メニューの右側の空白部分にボタンを設置
+        kintone.app.getHeaderMenuSpaceElement().appendChild(myIndexButton);
+
     }
 
     // Google Map がロードされるまで待機します
@@ -251,10 +331,6 @@
     // 一覧画面を開いた時に実行します
     function indexShow(event) {
         loadGMap();
-        
-        // ボタン
-        kintone.app.getHeaderMenuSpaceElement().innerHTML =  '<button id=\'my_index_button\'>現在地</button>';
-
         waitLoaded(event, 'index', 10000, 100);
     }
 
