@@ -229,16 +229,54 @@
                 marker[i] = new google.maps.Marker({
                     position: m_latlng[i],
                     map: map,
+                    title: "",
+                    // clickable: True,
                     // ポインタのアイコンは Google Charts を使用します
                     icon: 'https://chart.googleapis.com/chart?chst=d_bubble_text_small&chld=edge_bc|'
-                    + recno[i] + '|FF8060|000000'
+                    + recno[i] + '|FF8060|000000',
                 });
+                marker[i].addListener("click", function(e) {
+                    alert('アラート表示');
+                });   
+                // marker[i].addListener("click", () => {
+                //     alert('アラート表示');
+                // });   
             }
         }
 
-        marker.addListener("click", () => {
-            alert('aaaaaaaaaaaaaaa');
-        });
+        // クリックされた時の処理
+        // for (i = 0; i < marker.length; i += 1) {
+        //     marker[i].addListener("click", () => {
+        //         alert('aaaaaaaaaaaaaaa')
+            
+            
+        //     });
+          
+        // }
+
+        // Event
+        // marker.addListener( "click", function ( argument ) {
+        //     console.log( argument ) ;
+        // } ) ;
+
+
+        // var infowindow = new google.maps.InfoWindow();
+        // google.maps.event.addListener(marker, "click", (function(marker) {
+        //     return function(evt) {
+        //       var content = marker.getTitle();
+        //       infowindow.setContent(content);
+        //       infowindow.open(map, marker);
+        //       window.prompt('いま押しましたね？');
+        //       alert('aaaaaaaaaaaaaaaa')
+        //     }
+        // })(marker));
+
+
+        // GoogleMap.setOnMarkerClickListener(OnMarkerClickListener, 'click', function() {
+        //     alert('aaaaaaaaaaaaaa');
+        // });
+
+
 
         //クリックしたら指定したurlに遷移するイベント
         // google.maps.event.addListener(marker, 'click', (function(url){
