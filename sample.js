@@ -236,7 +236,33 @@
                     + recno[i] + '|FF8060|000000',
                 });
                 marker[i].addListener("click", function(e) {
-                    alert('アラート表示');
+                    console.log(e.latLng.lat());
+                    console.log(e.latLng.lng());
+                    console.log(e.latLng.toString());
+                    document.createElement('div');
+                    // var ido = e.latLng.lat();
+                    // var keido = e.latLng.lng();
+                    // var jusho  = ido + ',' + keido;
+                    var jusyo = e.latLng.toString()
+
+
+                    var genzaiti = navigator.geolocation.getCurrentPosition(function(position) {
+                        // var ini = new google.maps.Marker({
+                        //         position: new google.maps.LatLng(34.8192768,135.3580544),  //マーカ位置
+                        //         map: map,
+                        //         title: '現在位置',  //タイトル位置
+                        //         draggable:true,  //アイコンの移動の有効無効
+                        //         icon: 'http://waox.main.jp/maps/icon/car2.png',//アイコン指定
+                        //         animation: google.maps.Animation.DROP
+                        // });
+                        console.log(position);
+                        // alert(my_lat[0] + ',' + my_lng[0]) ;
+                        var y = ('(' + position.coords.latitude + ',' + position.coords.longitude + ')');
+                    
+                    
+
+                        alert('現在地：' + y + '\n' + '目的地：' + jusyo);
+                    });
                 });   
                 // marker[i].addListener("click", () => {
                 //     alert('アラート表示');
@@ -331,10 +357,76 @@
         myIndexButton.id = 'my_index_button';
         myIndexButton.innerText = '現在地';
 
-        // ボタンクリック時の処理
+
+
+        
+        // var my_lat = [];
+        // var my_lng = [];
+        
+        // async function aaa() {
+
+        //     await function test() {
+        //         navigator.geolocation.getCurrentPosition(test2);
+        //     }
+        //     // function test() {
+        //     //     navigator.geolocation.getCurrentPosition(test2);
+        //     // }
+            
+        //     await function test2(position) {
+
+        //         my_lat[0] = position.coords.latitude;
+        //         my_lng[0] = position.coords.longitude;
+        //         // alert('緯度：' + IDO + ', 経度：' + KEIDO);
+            
+        //     }
+    
+
+        //     // 34.8192768,135.3580544
+
+
+        //     alert(my_lat[0] + ',' + my_lng[0]) ;
+        //     // console.log(tes);
+        //     // console.log(`${my_lat[0]}`);
+        //     // console.log(aaa);
+        // };
+        // myIndexButton.onclick = function() {
+        //     aaa();
+        // } 
+        
+        // function test() {
+        //     navigator.geolocation.getCurrentPosition(test2);
+        // }        
+        // function test2(position) {
+
+        //     my_lat[0] = position.coords.latitude;
+        //     my_lng[0] = position.coords.longitude;
+        //     // alert('緯度：' + IDO + ', 経度：' + KEIDO);
+        
+        // }
+
         myIndexButton.onclick = function() {
-            window.prompt('いま押しましたね？');
+            // await test();
+            // alert(my_lat[0] + ',' + my_lng[0]) ;
+            // console.log(`${my_lat[0]}`);
+            
+
+            navigator.geolocation.getCurrentPosition(function(position) {
+                // var ini = new google.maps.Marker({
+                //         position: new google.maps.LatLng(34.8192768,135.3580544),  //マーカ位置
+                //         map: map,
+                //         title: '現在位置',  //タイトル位置
+                //         draggable:true,  //アイコンの移動の有効無効
+                //         icon: 'http://waox.main.jp/maps/icon/car2.png',//アイコン指定
+                //         animation: google.maps.Animation.DROP
+                // });
+                console.log(position);
+            // alert(my_lat[0] + ',' + my_lng[0]) ;
+            alert('現在地：'　+ position.coords.latitude + ',' + position.coords.longitude ) ;
+
+            });
         };
+
+
 
         // メニューの右側の空白部分にボタンを設置
         kintone.app.getHeaderMenuSpaceElement().appendChild(myIndexButton);
