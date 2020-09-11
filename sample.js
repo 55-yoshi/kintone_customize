@@ -47,6 +47,7 @@
 
         // Google Map の API ライブラリをロードします
         load('https://maps.googleapis.com/maps/api/js?v=3&key=' + api_key);
+        // load('https://maps.googleapis.com/maps/api/directions/json?origin=place_id:ChIJU49AUZLCj18RLQ-0Ko9_Wzw&destination=place_id:ChIJpYqBc3LBj18RO4KG0H4W_Cgplace_id:ChIJU49AUZLCj18RLQ-0Ko9_Wzw&destination=place_id:ChIJpYqBc3LBj18RO4KG0H4W_Cg&key=' + api_key);
 
     }
 
@@ -240,10 +241,10 @@
                     console.log(e.latLng.lng());
                     console.log(e.latLng.toString());
                     document.createElement('div');
-                    // var ido = e.latLng.lat();
-                    // var keido = e.latLng.lng();
-                    // var jusho  = ido + ',' + keido;
-                    var jusyo = e.latLng.toString()
+                    var ido = e.latLng.lat();
+                    var keido = e.latLng.lng();
+                    var jusyo  = (ido + ',' + keido);
+                    // var jusyo = e.latLng.toString()
 
 
                     var genzaiti = navigator.geolocation.getCurrentPosition(function(position) {
@@ -257,10 +258,18 @@
                         // });
                         console.log(position);
                         // alert(my_lat[0] + ',' + my_lng[0]) ;
-                        var y = ('(' + position.coords.latitude + ',' + position.coords.longitude + ')');
-                    
-                    
+                        var y = (position.coords.latitude + ',' + position.coords.longitude);
+                        
 
+
+
+                        window.open(
+                            'https://maps.googleapis.com/maps/api/directions/json?origin=' + y + '&destination=' + jusyo + '&key=AIzaSyBBbsU42u4vWII-pEsJCx8hnxAH9nV2Fb4',
+                            // null,
+                            '_blank' ,
+                            'top=100,left=100,width=300,height=300',
+                            );
+                        
                         alert('現在地：' + y + '\n' + '目的地：' + jusyo);
                     });
                 });   
