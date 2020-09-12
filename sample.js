@@ -179,8 +179,15 @@
         var mapEl = document.createElement('div');
         mapEl.setAttribute('id', 'map');
         mapEl.setAttribute('name', 'map');
-        mapEl.setAttribute('style', 'width: auto; height: 300px; margin-right: 30px; border: solid 2px #c4b097');
+        mapEl.setAttribute('style', 'width: auto; height: 300px;; margin-left: 40px; border: solid 2px #c4b097');
         elAction.appendChild(mapEl);
+
+        // テイスト案内を表示する要素を定義し、スペース部分の要素に追加します。
+        var rt_text = document.createElement('div');
+        rt_text.setAttribute('id', 'route_text');
+        rt_text.setAttribute('mane', 'route_text');
+        rt_text.setAttribute('style', 'width:auto; height:300px; margin-right:40px; border:solid 2px #c4b097, float:right; overflow:auto;');
+        elAction.appendChild(rt_text);
 
         // 一覧に表示されているレコードで、緯度・経度の値が入っている
         // 一番上のレコードの緯度・経度を取得します(地図の中心になります)
@@ -243,10 +250,20 @@
                     document.createElement('div');
                     var ido = e.latLng.lat();
                     var keido = e.latLng.lng();
-                    var jusyo  = (ido + ',' + keido);
-                    // var jusyo = e.latLng.toString()
+                    var customer_location  = (ido + ',' + keido);
+                    // var customer_location = e.latLng.toString()
 
 
+
+                    // /* ルート削除 */
+                    // function reset(){
+                    //     currentDirections=null;
+                    //     directionsDisplay.setMap(null);
+                    //     renderFLG=false;
+                    // }
+                    // reset();
+
+                    // 現在地取得
                     var genzaiti = navigator.geolocation.getCurrentPosition(function(position) {
                         // var ini = new google.maps.Marker({
                         //         position: new google.maps.LatLng(34.8192768,135.3580544),  //マーカ位置
@@ -258,19 +275,74 @@
                         // });
                         console.log(position);
                         // alert(my_lat[0] + ',' + my_lng[0]) ;
-                        var y = (position.coords.latitude + ',' + position.coords.longitude);
+                        var carent_location = (position.coords.latitude + ',' + position.coords.longitude);
                         
 
 
+                        var directionsService = new google.maps.DirectionsService;
+                        var directionsRenderer = new google.maps.DirectionsRenderer;
 
-                        window.open(
-                            'https://maps.googleapis.com/maps/api/directions/json?origin=' + y + '&destination=' + jusyo + '&key=AIzaSyBBbsU42u4vWII-pEsJCx8hnxAH9nV2Fb4',
-                            // null,
-                            '_blank' ,
-                            'top=100,left=100,width=300,height=300',
-                            );
+                        // ルート検索を実行
+                        directionsService.route({
+                            origin: carent_location,
+                            destination: customer_location,
+                            travelMode: google.maps.TravelMode.DRIVING
+                        }, function(response, status) {
+                            if (status === google.maps.DirectionsStatus.OK) {
+                                // ルートの所要時間
+                                var time = response.routes[0].legs[0].duration.text;  
+                                // ルートの距離
+                                var dist = response.routes[0].legs[0].distance.text; 
+                                // start_address のテキストを変更
+                                response.routes[0].legs[0].start_address = '出発地点：' + carent_location; 
+                                // end_address のテキストを変更
+                                response.routes[0].legs[0].end_address = '目的地点：' + customer_location + '出発地点からの距離：' + dist + '出発地点からの所要時間：'+ time;
+                                // ルート検索の結果を地図上に描画
+                                directionsRenderer.setMap(map);
+                                directionsRenderer.setDirections(response);
+                                console.log(response.routes[0].legs[0].end_address);
+                                // alert(response.routes[0].legs[0].end_address);
+                                // document.body.onload = addElement;
+
+                                // function addElement () { 
+                                // // 新しい div 要素を作成します 
+                                // var newDiv = document.createElement("div"); 
+                                // // いくつかの内容を与えます 
+                                // var newContent = document.createTextNode("Hi there and greetings!"); 
+                                // // テキストノードを新規作成した div に追加します
+                                // newDiv.appendChild(newContent);  
+
+                                // // DOM に新しく作られた要素とその内容を追加します 
+                                // // var currentDiv = document.getElementById("div1"); 
+                                // document.body.insertBefore(newDiv, currentDiv); 
+                                // }
+
+
+                                // directionsRenderer.setPanel(
+                                //     document.getElementById("div1")
+                                // );
+                                directionsRenderer.setPanel(document.getElementById('route_text'));
+
+                                // ルートのリセット。上手く行ってない。
+                                // directionsRenderer.clear();
+                                // directions.clear();
+
+                            }
+                        });
+
+                        // var myWindow = window.open("", "MsgWindow", "width=200, height=100");
+                        // myWindow.document.write("<p>This is 'MsgWindow'. I am 200px wide and 100px tall!</p>");
                         
-                        alert('現在地：' + y + '\n' + '目的地：' + jusyo);
+                        // window.open(
+                        //     'https://maps.googleapis.com/maps/api/directions/json?origin=' + carent_location + '&destination=' + customer_location + '&key=AIzaSyBBbsU42u4vWII-pEsJCx8hnxAH9nV2Fb4',
+                        //     // null,
+                        //     '_blank' ,
+                        //     'width=300,height=300,location=yes',
+                        // );
+                        
+
+                        // alert('https://maps.googleapis.com/maps/api/directions/json?origin=' + carent_location + '&destination=' + customer_location + '&key=AIzaSyBBbsU42u4vWII-pEsJCx8hnxAH9nV2Fb4')
+                        // alert('現在地：' + carent_location + '\n' + '目的地：' + customer_location);
                     });
                 });   
                 // marker[i].addListener("click", () => {
